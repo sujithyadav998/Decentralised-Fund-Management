@@ -8,7 +8,7 @@ import Navbar from "./Navbar/Navigation";
 import NavbarAdmin from "./Navbar/NavigationAdmin";
 import UserHome from "./UserHome";
 import StartEnd from "./StartEnd";
-import ElectionStatus from "./ElectionStatus";
+import FundStatus from "./FundStatus";
 
 // Contract
 import getWeb3 from "../getWeb3";
@@ -134,7 +134,7 @@ export default class Home extends Component {
           {!this.state.elStarted & !this.state.elEnded ? (
             <div className="container-item info">
               <center>
-                <h3>The election has not been initialize.</h3>
+                <h3>The Fund campaign has not been initialize.</h3>
                 {this.state.isAdmin ? (
                   <p>Set up the election.</p>
                 ) : (
@@ -156,7 +156,7 @@ export default class Home extends Component {
           <>
             <div className="container-item attention">
               <center>
-                <h3>The Election ended.</h3>
+                <h3>The Fund campaign ended.</h3>
                 <br />
                 <Link
                   to="/Results"
@@ -254,16 +254,16 @@ export default class Home extends Component {
                 </div>
                 {/* about-election */}
                 <div className="about-election">
-                  <h3>About Election</h3>
+                  <h3>About Fund Campaign</h3>
                   <div className="container-item center-items">
                     <div>
                       <label className="label-home">
-                        Election Title{" "}
+                        Fund Campaign Title{" "}
                         {errors.electionTitle && <EMsg msg="*required" />}
                         <input
                           className="input-home"
                           type="text"
-                          placeholder="eg. School Election"
+                          placeholder="eg. School FUND"
                           {...register("electionTitle", {
                             required: true,
                           })}
@@ -293,7 +293,7 @@ export default class Home extends Component {
               elEnded={this.state.elEnded}
               endElFn={this.endElection}
             />
-            <ElectionStatus
+            <FundStatus
               elStarted={this.state.elStarted}
               elEnded={this.state.elEnded}
             />

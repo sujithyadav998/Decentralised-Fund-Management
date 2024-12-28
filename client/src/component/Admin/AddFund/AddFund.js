@@ -8,20 +8,20 @@ import Election from "../../../contracts/Election.json";
 
 import AdminOnly from "../../AdminOnly";
 
-import "./AddCandidate.css";
+import "./AddFund.css";
 
-export default class AddCandidate extends Component {
+export default class AddFund extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ElectionInstance: undefined,
+      FundInstance: undefined,
       web3: null,
       accounts: null,
       isAdmin: false,
       header: "",
       slogan: "",
-      candidates: [],
-      candidateCount: undefined,
+      funds: [],
+      fundCount: undefined,
     };
   }
 
@@ -50,34 +50,34 @@ export default class AddCandidate extends Component {
       // example of interacting with the contract's methods.
       this.setState({
         web3: web3,
-        ElectionInstance: instance,
+        FundInstance: instance,
         account: accounts[0],
       });
 
-      // Total number of candidates
-      const candidateCount = await this.state.ElectionInstance.methods
+      // Total number of funds
+      const fundCount = await this.state.FundInstance.methods
         .getTotalCandidate()
         .call();
-      this.setState({ candidateCount: candidateCount });
+      this.setState({ fundCount: fundCount });
 
-      const admin = await this.state.ElectionInstance.methods.getAdmin().call();
+      const admin = await this.state.FundInstance.methods.getAdmin().call();
       if (this.state.account === admin) {
         this.setState({ isAdmin: true });
       }
 
-      // Loading Candidates details
-      for (let i = 0; i < this.state.candidateCount; i++) {
-        const candidate = await this.state.ElectionInstance.methods
+      // Loading funds details
+      for (let i = 0; i < this.state.fundCount; i++) {
+        const candidate = await this.state.FundInstance.methods
           .candidateDetails(i)
           .call();
-        this.state.candidates.push({
+        this.state.funds.push({
           id: candidate.candidateId,
           header: candidate.header,
           slogan: candidate.slogan,
         });
       }
 
-      this.setState({ candidates: this.state.candidates });
+      this.setState({ funds: this.state.funds });
     } catch (error) {
       // Catch any errors for any of the above operations.
       console.error(error);
@@ -94,7 +94,7 @@ export default class AddCandidate extends Component {
   };
 
   addCandidate = async () => {
-    await this.state.ElectionInstance.methods
+    await this.state.FundInstance.methods
       .addCandidate(this.state.header, this.state.slogan)
       .send({ from: this.state.account, gas: 1000000 });
     window.location.reload();
@@ -121,26 +121,26 @@ export default class AddCandidate extends Component {
       <>
         <NavbarAdmin />
         <div className="container-main">
-          <h2>Add a new candidate</h2>
-          <small>Total candidates: {this.state.candidateCount}</small>
+          <h2>Add a new Fund</h2>
+          <small>Total Funds: {this.state.fundCount}</small>
           <div className="container-item">
             <form className="form">
               <label className={"label-ac"}>
-                Header
+                Title
                 <input
                   className={"input-ac"}
                   type="text"
-                  placeholder="eg. Marcus"
+                  placeholder="Smart Fund"
                   value={this.state.header}
                   onChange={this.updateHeader}
                 />
               </label>
               <label className={"label-ac"}>
-                Slogan
+                Who can apply ? 
                 <input
                   className={"input-ac"}
                   type="text"
-                  placeholder="eg. It is what it is"
+                  placeholder="students , start-up"
                   value={this.state.slogan}
                   onChange={this.updateSlogan}
                 />
@@ -157,12 +157,12 @@ export default class AddCandidate extends Component {
             </form>
           </div>
         </div>
-        {loadAdded(this.state.candidates)}
+        {loadAdded(this.state.funds)}
       </>
     );
   }
 }
-export function loadAdded(candidates) {
+export function loadAdded(funds) {
   const renderAdded = (candidate) => {
     return (
       <>
@@ -183,11 +183,11 @@ export function loadAdded(candidates) {
   return (
     <div className="container-main" style={{ borderTop: "1px solid" }}>
       <div className="container-item info">
-        <center>Candidates List</center>
+        <center>Funds List</center>
       </div>
-      {candidates.length < 1 ? (
+      {funds.length < 1 ? (
         <div className="container-item alert">
-          <center>No candidates added.</center>
+          <center>No funds added.</center>
         </div>
       ) : (
         <div
@@ -197,7 +197,7 @@ export function loadAdded(candidates) {
             backgroundColor: "#DDFFFF",
           }}
         >
-          {candidates.map(renderAdded)}
+          {funds.map(renderAdded)}
         </div>
       )}
     </div>

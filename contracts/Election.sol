@@ -118,6 +118,10 @@ contract Election {
         address voterAddress;
         string name;
         string phone;
+        string businessName;
+        uint256 fundingAmount;
+        string fundingPurpose;
+        string registrationDocLink;
         bool isVerified;
         bool hasVoted;
         bool isRegistered;
@@ -126,16 +130,26 @@ contract Election {
     mapping(address => Voter) public voterDetails;
 
     // Request to be added as voter
-    function registerAsVoter(string memory _name, string memory _phone) public {
-        Voter memory newVoter =
-            Voter({
-                voterAddress: msg.sender,
-                name: _name,
-                phone: _phone,
-                hasVoted: false,
-                isVerified: false,
-                isRegistered: true
-            });
+    function registerAsVoter(
+        string memory _name, 
+        string memory _phone,
+        string memory _businessName,
+        uint256 _fundingAmount,
+        string memory _fundingPurpose,
+        string memory _registrationDocLink
+    ) public {
+        Voter memory newVoter = Voter({
+            voterAddress: msg.sender,
+            name: _name,
+            phone: _phone,
+            businessName: _businessName,
+            fundingAmount: _fundingAmount,
+            fundingPurpose: _fundingPurpose,
+            registrationDocLink: _registrationDocLink,
+            hasVoted: false,
+            isVerified: false,
+            isRegistered: true
+        });
         voterDetails[msg.sender] = newVoter;
         voters.push(msg.sender);
         voterCount += 1;
@@ -173,5 +187,28 @@ contract Election {
 
     function getEnd() public view returns (bool) {
         return end;
+    }
+
+    // Add a new function to get approved voters
+    function getApprovedVoters() public view returns (address[] memory) {
+        // First, count how many approved voters we have
+        uint256 approvedCount = 0;
+        for (uint256 i = 0; i < voters.length; i++) {
+            if (voterDetails[voters[i]].isVerified) {
+                approvedCount++;
+            }
+        }
+        
+        // Create array of approved voters
+        address[] memory approvedVoters = new address[](approvedCount);
+        uint256 j = 0;
+        for (uint256 i = 0; i < voters.length; i++) {
+            if (voterDetails[voters[i]].isVerified) {
+                approvedVoters[j] = voters[i];
+                j++;
+            }
+        }
+        
+        return approvedVoters;
     }
 }

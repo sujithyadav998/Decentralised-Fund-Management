@@ -14,7 +14,7 @@ export default class StartEnd extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ElectionInstance: undefined,
+      FundInstance: undefined,
       web3: null,
       accounts: null,
       isAdmin: false,
@@ -48,20 +48,20 @@ export default class StartEnd extends Component {
       // example of interacting with the contract's methods.
       this.setState({
         web3: web3,
-        ElectionInstance: instance,
+        FundInstance: instance,
         account: accounts[0],
       });
 
       // Admin info
-      const admin = await this.state.ElectionInstance.methods.getAdmin().call();
+      const admin = await this.state.FundInstance.methods.getAdmin().call();
       if (this.state.account === admin) {
         this.setState({ isAdmin: true });
       }
 
       // Get election start and end values
-      const start = await this.state.ElectionInstance.methods.getStart().call();
+      const start = await this.state.FundInstance.methods.getStart().call();
       this.setState({ elStarted: start });
-      const end = await this.state.ElectionInstance.methods.getEnd().call();
+      const end = await this.state.FundInstance.methods.getEnd().call();
       this.setState({ elEnded: end });
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -72,15 +72,15 @@ export default class StartEnd extends Component {
     }
   };
 
-  startElection = async () => {
-    await this.state.ElectionInstance.methods
-      .startElection()
+  startfund = async () => {
+    await this.state.FundInstance.methods
+      .startfund()
       .send({ from: this.state.account, gas: 1000000 });
     window.location.reload();
   };
-  endElection = async () => {
-    await this.state.ElectionInstance.methods
-      .endElection()
+  endfund = async () => {
+    await this.state.FundInstance.methods
+      .endfund()
       .send({ from: this.state.account, gas: 1000000 });
     window.location.reload();
   };
@@ -98,7 +98,7 @@ export default class StartEnd extends Component {
       return (
         <>
           <Navbar />
-          <AdminOnly page="Start and end election page." />
+          <AdminOnly page="Start and end Fund campaign page." />
         </>
       );
     }
@@ -107,22 +107,22 @@ export default class StartEnd extends Component {
         <NavbarAdmin />
         {!this.state.elStarted & !this.state.elEnded ? (
           <div className="container-item info">
-            <center>The election have never been initiated.</center>
+            <center>The Fund campaign have never been initiated.</center>
           </div>
         ) : null}
         <div className="container-main">
-          <h3>Start or end election</h3>
+          <h3>Start or end Fund campaign</h3>
           {!this.state.elStarted ? (
             <>
               <div className="container-item">
-                <button onClick={this.startElection} className="start-btn">
+                <button onClick={this.startfund} className="start-btn">
                   Start {this.state.elEnded ? "Again" : null}
                 </button>
               </div>
               {this.state.elEnded ? (
                 <div className="container-item">
                   <center>
-                    <p>The election ended.</p>
+                    <p>The Fund campaign ended.</p>
                   </center>
                 </div>
               ) : null}
@@ -131,11 +131,11 @@ export default class StartEnd extends Component {
             <>
               <div className="container-item">
                 <center>
-                  <p>The election started.</p>
+                  <p>The Fund Campaign started.</p>
                 </center>
               </div>
               <div className="container-item">
-                <button onClick={this.endElection} className="start-btn">
+                <button onClick={this.endfund} className="start-btn">
                   End
                 </button>
               </div>

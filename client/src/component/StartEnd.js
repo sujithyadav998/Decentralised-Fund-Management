@@ -25,7 +25,7 @@ const StartEnd = (props) => {
                 className="container-item attention"
                 style={{ display: "block" }}
               >
-                <h2>Do not forget to add candidates.</h2>
+                <h2>Do not forget to add  Funds.</h2>
                 <p>
                   Go to{" "}
                   <Link
@@ -36,28 +36,28 @@ const StartEnd = (props) => {
                       textDecoration: "underline",
                     }}
                   >
-                    add candidates
+                    add funds
                   </Link>{" "}
                   page.
                 </p>
               </div>
               <div className="container-item">
                 <button type="submit" style={btn}>
-                  Start Election {props.elEnded ? "Again" : null}
+                  Start Campaign {props.elEnded ? "Again" : null}
                 </button>
               </div>
             </>
           ) : (
             <div className="container-item">
               <center>
-                <p>Re-deploy the contract to start election again.</p>
+                <p>Re-deploy the contract to start Fund campaign again.</p>
               </center>
             </div>
           )}
           {props.elEnded ? (
             <div className="container-item">
               <center>
-                <p>The election ended.</p>
+                <p>The Fund campaign ended</p>
               </center>
             </div>
           ) : null}
@@ -66,7 +66,7 @@ const StartEnd = (props) => {
         <>
           <div className="container-item">
             <center>
-              <p>The election started.</p>
+              <p>The Fund Campaign started.</p>
             </center>
           </div>
           <div className="container-item">

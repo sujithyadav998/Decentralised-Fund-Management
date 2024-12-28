@@ -76,6 +76,10 @@ export default class Registration extends Component {
           address: voter.voterAddress,
           name: voter.name,
           phone: voter.phone,
+          businessName: voter.businessName,
+          fundingAmount: this.state.web3.utils.fromWei(voter.fundingAmount, 'ether'),
+          fundingPurpose: voter.fundingPurpose,
+          registrationDocLink: voter.registrationDocLink,
           hasVoted: voter.hasVoted,
           isVerified: voter.isVerified,
           isRegistered: voter.isRegistered,
@@ -106,11 +110,15 @@ export default class Registration extends Component {
               <tr>
                 <th>Name</th>
                 <th>Phone</th>
-                <th>Voted</th>
+                <th>Business</th>
+                <th>Funding</th>
+                <th>Government entity</th>
               </tr>
               <tr>
                 <td>{voter.name}</td>
                 <td>{voter.phone}</td>
+                <td>{voter.businessName}</td>
+                <td>${voter.fundingAmount}</td>
                 <td>{voter.hasVoted ? "True" : "False"}</td>
               </tr>
             </table>
@@ -134,6 +142,18 @@ export default class Registration extends Component {
               <td>{voter.phone}</td>
             </tr>
             <tr>
+              <th>Business Name</th>
+              <td>{voter.businessName}</td>
+            </tr>
+            <tr>
+              <th>Funding Amount</th>
+              <td>${voter.fundingAmount}</td>
+            </tr>
+            <tr>
+              <th>Purpose of Funding</th>
+              <td>{voter.fundingPurpose}</td>
+            </tr>
+            <tr>
               <th>Voted</th>
               <td>{voter.hasVoted ? "True" : "False"}</td>
             </tr>
@@ -144,6 +164,14 @@ export default class Registration extends Component {
             <tr>
               <th>Registered</th>
               <td>{voter.isRegistered ? "True" : "False"}</td>
+            </tr>
+            <tr>
+              <th>Registration Doc</th>
+              <td>
+                <a href={voter.registrationDocLink} target="_blank" rel="noopener noreferrer">
+                  View Document
+                </a>
+              </td>
             </tr>
           </table>
           <div style={{}}>
@@ -187,7 +215,7 @@ export default class Registration extends Component {
           ) : (
             <>
               <div className="container-item info">
-                <center>List of registered voters</center>
+                <center>List of Applications</center>
               </div>
               {this.state.voters.map(this.renderUnverifiedVoters)}
             </>

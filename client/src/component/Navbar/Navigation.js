@@ -16,14 +16,14 @@ export default function Navbar() {
       >
         <li>
           <NavLink to="/Registration" activeClassName="nav-active">
-            <i className="far fa-registered" /> Registration
+            <i className="far fa-registered" /> Apply
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to="/Voting" activeClassName="nav-active">
             <i className="fas fa-vote-yea" /> Voting
           </NavLink>
-        </li>
+        </li> */}
         <li>
           <NavLink to="/Results" activeClassName="nav-active">
             <i className="fas fa-poll-h" /> Results

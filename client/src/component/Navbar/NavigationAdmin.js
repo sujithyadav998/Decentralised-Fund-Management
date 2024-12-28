@@ -23,19 +23,19 @@ export default function NavbarAdmin() {
         </li>
         <li>
           <NavLink to="/AddCandidate" activeClassName="nav-active">
-            Add Candidate
+            Add fund
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to="/Registration" activeClassName="nav-active">
             <i className="far fa-registered" /> Registration
           </NavLink>
-        </li>
-        <li>
+        </li> */}
+        {/* <li>
           <NavLink to="/Voting" activeClassName="nav-active">
             <i className="fas fa-vote-yea" /> Voting
           </NavLink>
-        </li>
+        </li> */}
         <li>
           <NavLink to="/Results" activeClassName="nav-active">
             <i className="fas fa-poll-h" /> Results

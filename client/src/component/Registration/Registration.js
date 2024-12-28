@@ -35,6 +35,10 @@ export default class Registration extends Component {
         isVerified: false,
         isRegistered: false,
       },
+      businessName: "",
+      fundingAmount: "",
+      fundingPurpose: "",
+      registrationDocLink: "",
     };
   }
 
@@ -134,9 +138,28 @@ export default class Registration extends Component {
   };
   registerAsVoter = async () => {
     await this.state.ElectionInstance.methods
-      .registerAsVoter(this.state.voterName, this.state.voterPhone)
+      .registerAsVoter(
+        this.state.voterName, 
+        this.state.voterPhone,
+        this.state.businessName,
+        this.state.web3.utils.toWei(this.state.fundingAmount, 'ether'),
+        this.state.fundingPurpose,
+        this.state.registrationDocLink
+      )
       .send({ from: this.state.account, gas: 1000000 });
     window.location.reload();
+  };
+  updateBusinessName = (event) => {
+    this.setState({ businessName: event.target.value });
+  };
+  updateFundingAmount = (event) => {
+    this.setState({ fundingAmount: event.target.value });
+  };
+  updateFundingPurpose = (event) => {
+    this.setState({ fundingPurpose: event.target.value });
+  };
+  updateRegistrationDocLink = (event) => {
+    this.setState({ registrationDocLink: event.target.value });
   };
   render() {
     if (!this.state.web3) {
@@ -155,11 +178,11 @@ export default class Registration extends Component {
         ) : (
           <>
             <div className="container-item info">
-              <p>Total registered voters: {this.state.voters.length}</p>
+              <p>Total registered applications {this.state.voters.length}</p>
             </div>
             <div className="container-main">
-              <h3>Registration</h3>
-              <small>Register to vote.</small>
+              <h3>Application</h3>
+              <small>apply for funds</small>
               <div className="container-item">
                 <form>
                   <div className="div-li">
@@ -194,6 +217,54 @@ export default class Registration extends Component {
                         placeholder="eg. 9841234567"
                         value={this.state.voterPhone}
                         onChange={this.updateVoterPhone}
+                      />
+                    </label>
+                  </div>
+                  <div className="div-li">
+                    <label className={"label-r"}>
+                      Business Name
+                      <input
+                        className={"input-r"}
+                        type="text"
+                        placeholder="eg. Tech Startup Inc."
+                        value={this.state.businessName}
+                        onChange={this.updateBusinessName}
+                      />
+                    </label>
+                  </div>
+                  <div className="div-li">
+                    <label className={"label-r"}>
+                      Amount of Funding Requested ($)
+                      <input
+                        className={"input-r"}
+                        type="number"
+                        placeholder="eg. 50000"
+                        value={this.state.fundingAmount}
+                        onChange={this.updateFundingAmount}
+                      />
+                    </label>
+                  </div>
+                  <div className="div-li">
+                    <label className={"label-r"}>
+                      Purpose of Funding
+                      <textarea
+                        className={"input-r"}
+                        placeholder="Describe the purpose of requested funding..."
+                        value={this.state.fundingPurpose}
+                        onChange={this.updateFundingPurpose}
+                        style={{ height: "100px", resize: "vertical" }}
+                      />
+                    </label>
+                  </div>
+                  <div className="div-li">
+                    <label className={"label-r"}>
+                      Registration Document Link
+                      <input
+                        className={"input-r"}
+                        type="url"
+                        placeholder="https://drive.google.com/..."
+                        value={this.state.registrationDocLink}
+                        onChange={this.updateRegistrationDocLink}
                       />
                     </label>
                   </div>
@@ -253,7 +324,7 @@ export function loadCurrentVoter(voter, isRegistered) {
       <div
         className={"container-item " + (isRegistered ? "success" : "attention")}
       >
-        <center>Your Registered Info</center>
+        <center>Your Application Info</center>
       </div>
       <div
         className={"container-list " + (isRegistered ? "success" : "attention")}
@@ -272,7 +343,7 @@ export function loadCurrentVoter(voter, isRegistered) {
             <td>{voter.phone}</td>
           </tr>
           <tr>
-            <th>Voted</th>
+            <th>Government entity</th>
             <td>{voter.hasVoted ? "True" : "False"}</td>
           </tr>
           <tr>
@@ -307,7 +378,7 @@ export function loadAllVoters(voters) {
               <td>{voter.phone}</td>
             </tr>
             <tr>
-              <th>Voted</th>
+              <th>Government Entity</th>
               <td>{voter.hasVoted ? "True" : "False"}</td>
             </tr>
             <tr>
